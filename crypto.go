@@ -1,4 +1,4 @@
-package main
+package estclient_go
 
 import (
 	"bytes"
@@ -131,7 +131,7 @@ func GetWithCA(ca_file, url string, headers map[string]string, data []byte, meth
 // openssl base64 -d -in cacerts.p7m | openssl pkcs7 -inform DER -outform PEM -print_certs
 func GetCaCert(est_url string) []byte {
 	url := est_url + "/.well-known/est/cacerts"
-	return GetWithCA("dstcax3.pem", url, nil, nil, "", "", "")
+	return GetWithCA("assets/dstcax3.pem", url, nil, nil, "", "", "")
 }
 
 func SimpleEnroll(est_url string, csr []byte) []byte {
@@ -139,7 +139,7 @@ func SimpleEnroll(est_url string, csr []byte) []byte {
 	headers := map[string]string{
 		"Content-Type": "application/pkcs10",
 	}
-	return GetWithCA("dstcax3.pem", url, headers, csr, "POST", "estuser", "estpwd")
+	return GetWithCA("assets/dstcax3.pem", url, headers, csr, "POST", "estuser", "estpwd")
 }
 
 func SimpleReEnroll(est_url string, csr []byte) []byte {
@@ -147,7 +147,7 @@ func SimpleReEnroll(est_url string, csr []byte) []byte {
 	headers := map[string]string{
 		"Content-Type": "application/pkcs10",
 	}
-	return GetWithCA("dstcax3.pem", url, headers, csr, "POST", "estuser", "estpwd")
+	return GetWithCA("assets/dstcax3.pem", url, headers, csr, "POST", "estuser", "estpwd")
 }
 
 func pkcs7ToPem(pkcs7 []byte) (string, error) {
@@ -178,7 +178,7 @@ func pkcs7ToPem(pkcs7 []byte) (string, error) {
 // curl https://testrfc7030.com:8443/.well-known/est/csrattrs -s --cacert ./dstcax3.pem | openssl base64 -d -A | openssl asn1parse -inform DER
 func CSRAttr(est_url string, csr []byte) asn1.RawValue {
 	url := est_url + "/.well-known/est/csrattrs"
-	bin_data := GetWithCA("dstcax3.pem", url, nil, csr, "", "estuser", "estpwd")
+	bin_data := GetWithCA("assets/dstcax3.pem", url, nil, csr, "", "estuser", "estpwd")
 	bin_data_str := removeNonPrintable(string(bin_data))
 	data, err := base64.StdEncoding.DecodeString(string(bin_data_str))
 	if err != nil {
