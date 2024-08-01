@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bl9/estclient_go"
+	estclient_go "github.com/bl9/estclient-go"
 )
 
 func main() {
